@@ -1,0 +1,35 @@
+<html>
+<head>
+    <title>Stocks</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.js"></script>
+</head>
+<body>
+    <div class="ui container">
+        <h1 class="ui header">Stock List</h1>
+        <table class="ui inverted table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Symbol</th>
+                    <th>Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for stock in stocks %}
+                <tr>
+                    <td> {{ stock.id }} </td>
+                    <td> {{ stock.symbol }} </td>
+                    <td> 
+                        <a href="/stock/{{stock.symbol}}">
+                            {{ stock.name }} 
+                        </a>
+                    </td>
+                </tr>     
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

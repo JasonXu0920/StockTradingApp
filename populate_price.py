@@ -27,8 +27,11 @@ api = tradeapi.REST(config.API_KEY, config.API_SECRETE, base_url=config.BASE_URL
 chunk_size = 200
 for i in range(0, len(symbols), chunk_size):
     symbol_chunk = symbols[i:i+chunk_size]
-    barsets = api.get_bars(symbol_chunk, TimeFrame(1, TimeFrameUnit.Day), "2023-06-01", "2023-12-01", adjustment='raw').df
-
+    try:
+        barsets = api.get_bars(symbol_chunk, TimeFrame(1, TimeFrameUnit.Day), "2023-06-01", "2023-07-01", adjustment='raw').df
+    except Exception as e:
+        print(e)
+        
     for index, row in barsets.iterrows():
         print(f"Processing ${row['symbol']}")
         stock_id = stock_dict[row['symbol']]
