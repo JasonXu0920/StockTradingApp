@@ -7,10 +7,21 @@
 <body>
     <div class="ui container">
         <h1 class="ui header">Stock List</h1>
+
+        <form method='get'>
+            <select name='filter'>
+                <option value="">All Stock</option>
+                <option value="new_intraday_highs">New Intraday Highs</option>
+                <option value="new_closing_highs">New Closing Highs</option>
+                <option value="new_intraday_lows">New Intraday Lows</option>
+                <option value="new_closing_lows">New Closing Lows</option>
+            </select>
+            <input type="submit" />
+        </form>
+
         <table class="ui inverted table">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Symbol</th>
                     <th>Name</th>
                 </tr>
@@ -18,7 +29,6 @@
             <tbody>
                 {% for stock in stocks %}
                 <tr>
-                    <td> {{ stock.id }} </td>
                     <td> {{ stock.symbol }} </td>
                     <td> 
                         <a href="/stock/{{stock.symbol}}">
