@@ -17,7 +17,7 @@ templates = Jinja2Templates(directory="templates")
 def index(request: Request):
     stock_filter = request.query_params.get('filter', False)
     
-    connection = sqlite3.connect("app.db")
+    connection = sqlite3.connect(config.DB)
     connection.row_factory = sqlite3.Row
     cursor = connection.cursor()
 
@@ -43,7 +43,7 @@ def index(request: Request):
 
 @app.get("/stock/{symbol}")
 def stock_detail(request: Request, symbol):
-    connection = sqlite3.connect("app.db")
+    connection = sqlite3.connect(config.DB)
     connection.row_factory = sqlite3.Row
     cursor = connection.cursor()
 
@@ -67,7 +67,7 @@ def stock_detail(request: Request, symbol):
 
 @app.post("/apply_strategy")
 def apply_strategy(strategy_id: int=Form(...), stock_id: int=Form(...)):
-    connection = sqlite3.connect("app.db")
+    connection = sqlite3.connect(config.DB)
     connection.row_factory = sqlite3.Row
     cursor = connection.cursor()
 
@@ -81,7 +81,7 @@ def apply_strategy(strategy_id: int=Form(...), stock_id: int=Form(...)):
 
 @app.get("/strategy/{strategy_id}")
 def strategy(request: Request, strategy_id):
-    connection = sqlite3.connect("app.db")
+    connection = sqlite3.connect(config.DB)
     connection.row_factory = sqlite3.Row
     cursor = connection.cursor()
 
