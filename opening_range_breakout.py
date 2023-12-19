@@ -26,7 +26,7 @@ symbols = [stock['symbol'] for stock in stocks]
 
 api = tradeapi.REST(config.API_KEY, config.API_SECRETE, base_url=config.BASE_URL)
 
-orders = api.list_orders()
+orders = api.list_orders(status='all', after='2023-06-30T13:30:00Z')
 existing_orders_symbol = [order.symbol for order in orders]
 
 current_date = date.today().isoformat()

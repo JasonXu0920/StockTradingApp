@@ -31,6 +31,16 @@ def index(request: Request):
             ) where date = ?            
         """, ("2023-06-30",))
         #date.today().isoformat()
+    elif stock_filter == "new_closing_lows":
+        cursor.execute("""
+            SELECT * FROM (
+                SELECT symbol, name, stock_id, min(close), date
+                FROM stock_price join stock on stock.id = stock_price.stock_id            
+                group by stock_id
+                order by symbol 
+            ) where date = ?            
+        """, ("2023-06-30",))
+        #date.today().isoformat()
     else:
         cursor.execute("""
             SELECT symbol, name FROM stock ORDER BY symbol
