@@ -1,8 +1,9 @@
 import sqlite3, config
 import alpaca_trade_api as tradeapi
 from  datetime import date
+import smtplib, ssl
 
-from main import strategy
+context = ssl.create_default_context()
 
 connection = sqlite3.connect(config.DB)
 connection.row_factory = sqlite3.Row
@@ -33,6 +34,7 @@ current_date = date.today().isoformat()
 start_minute_bar = f"{current_date} 09:30:00-04:00"
 end_minute_bar = f"{current_date} 09:45:00-04:00"
 
+messages = []
 for symbol in symbols:
     minutes_bars = api.polygon.historic_agg_v2(symbol, 1, 'minute', _from='2023-06-30', to='2023-06-30').df
     opening_range_mask = (minutes_bars.index >= start_minute_bar) and (minutes_bars.index < end_minute_bar)
@@ -49,6 +51,7 @@ for symbol in symbols:
         limit_price = after_opening_range_breakout.iloc[0]['close']
         
         if symbol not in existing_orders_symbol:
+            messages.append(f"Placing order for {symbol} at {limit_price}\n\n")
             api.submit_order(
                 symbol=symbol,
                 side='buy',
@@ -66,4 +69,9 @@ for symbol in symbols:
             )
         else:
             print("Order already placed !!!")
-connection.commit()
+
+with smtplib.SMTP_SSL(config.EMAIL_HOST, config.EMAIL_PORT, context=context) as server:
+    server.login(config.EMAIL_ADDRESS, config.EMAIL_PASSWORD)
+    email_message = f"Subject: Trade Notifications for {current_date}."
+    email_message = "\n\n".join(messages)
+    server.sendmail(config.EMAIL_ADDRESS, config.EMAIL_ADDRESS, email_message)
