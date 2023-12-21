@@ -14,7 +14,7 @@
         <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
             {
                 "autosize": true,
-                "symbol": "{{stock.exchange}}:{{stock.symbol}}",
+                "symbol": "{% if stock.exchange == 'ARCA' %}AMEX{% else %}{{stock.exchange}}{% endif %}:{{stock.symbol}}",
                 "interval": "D",
                 "timezone": "Australia/Sydney",
                 "theme": "light",

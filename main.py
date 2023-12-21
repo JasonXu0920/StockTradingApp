@@ -28,8 +28,8 @@ def index(request: Request):
                 FROM stock_price join stock on stock.id = stock_price.stock_id            
                 group by stock_id
                 order by symbol 
-            ) where date = ?            
-        """, ("2023-06-30",))
+            ) where date = (SELECT MAX(date) FROM stock_price)            
+        """)
         #date.today().isoformat()
     elif stock_filter == "new_closing_lows":
         cursor.execute("""
@@ -38,8 +38,8 @@ def index(request: Request):
                 FROM stock_price join stock on stock.id = stock_price.stock_id            
                 group by stock_id
                 order by symbol 
-            ) where date = ?            
-        """, ("2023-06-30",))
+            ) where date = (SELECT MAX(date) FROM stock_price)            
+        """)
         #date.today().isoformat()
     else:
         cursor.execute("""
